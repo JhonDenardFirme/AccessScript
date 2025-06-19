@@ -17,7 +17,7 @@ const Documentation = () => {
 
         <div className="flex flex-col justify-center items-start px-64 mb-32">
               <h1 className="text-4xl font-medium mb-8"> <span className="text-gradient-blue font-extrabold" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100"> ACCESSSCRIPT</span></h1>
-              <p className="text-lg font-light text-left">AccessScript is a specialized programming language designed for implementing Role-Based Access Control (RBAC) in web development. Built with simplicity and clarity in mind, it allows developers—especially beginners and educators—to define, manage, and enforce access permissions using readable and logical syntax. AccessScript removes the complexity of traditional permission systems by offering an intuitive, purpose-driven syntax that promotes security and maintainability. Whether you're working on a small web app or teaching web security fundamentals, AccessScript helps teams write access logic that’s both powerful and understandable.
+              <p className="text-lg font-light text-left">AccessScript is a specialized programming language designed for implementing Role-Based Access Control (RBAC) in web development. Built with simplicity and clarity in mind, it allows developers—especially beginners and educators—to define, manage, and enforce access permissions using readable and logical syntax. AccessScript removes the complexity of traditional permission systems by offering an intuitive, purpose-driven syntax that promotes security and maintainability. Whether you&apos;sre working on a small web app or teaching web security fundamentals, AccessScript helps teams write access logic thats both powerful and understandable.
             </p>
               
         </div>
@@ -45,7 +45,7 @@ Unlike traditional RBAC systems that require scattered conditionals across the b
               
         </div>
 
-        <Link className="hover:scale-110 transition-all duration-300 ease-out text-sm" href={"https://drive.google.com/file/d/1WTj7eH0ZqcDR4NdZd_cXVtp4MR2kURpt/view?usp=sharing"}>
+        <Link className="hover:scale-110 transition-all duration-300 ease-out text-sm" href={"https://drive.google.com/file/d/1m-6QwOxfP34LPm-_JKjMxt4Vx0cgj0WX/view?usp=sharing"}>
             <div className="border-[1px] border-neutral-800  rounded-lg h-24 p-4 flex justify-center items-center mx-64 gap-2 mt-12 hover:bg-teal-950 hover:cursor-pointer">
                                 <img src='document.svg' className='h-6'></img>
                                 <p className='text-sm text-[#00C0D3]'>GET THE FULL DOCUMENTATION</p>

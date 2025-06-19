@@ -218,8 +218,3 @@ export default CodeEditorv2
 
 
 
-
-What's wrong? WHen I click Submit button, the tokens are appearing for a split second
-And then gone
-
-I think there is a conflict with useEffect
