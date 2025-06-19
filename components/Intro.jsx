@@ -29,9 +29,9 @@ const Intro = () => {
           </div>
 
           <div className="flex flex-col justify-center items-center -ml-32">
-              <h1 className="text-4xl font-medium mb-8"> THIS IS <span className="text-gradient-blue font-extrabold" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100"> KIDDOCODE</span></h1>
-              <p className="text-lg font-light text-left w-[60%] mb-4">KiddoCode is an intuitive and beginner-focused programming language designed to introduce children and students to the fundamentals of coding. </p>
-              <p className="text-lg font-light text-left w-[60%]">It promotes creativity, critical thinking, and problem-solving in an engaging and accessible learning environment.</p>
+              <h1 className="text-4xl font-medium mb-8"> THIS IS <span className="text-gradient-blue font-extrabold" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100"> ACCESSSCRIPT</span></h1>
+              <p className="text-lg font-light text-left w-[60%] mb-4">AccessScript is a specialized programming language designed to simplify the implementation of Role-Based Access Control (RBAC) within web development projects. </p>
+              <p className="text-lg font-light text-left w-[60%]">It enables developers to define, manage, and enforce access permissions clearly and efficiently—making security logic more readable, maintainable, and scalable.</p>
           </div>
 
 

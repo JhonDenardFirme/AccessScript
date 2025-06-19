@@ -13,7 +13,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "KiddoCode",
+  title: "AccessScript",
   description: "Programming Language in Baby Mode",
 };
 

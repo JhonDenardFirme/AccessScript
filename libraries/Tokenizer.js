@@ -1,19 +1,13 @@
 
 import { Categorize } from "./Categorizer";
-import { ColorLiteralChecker } from "./LiteralChecker/ColorLiteralChecker";
-import { EmotionLiteralChecker } from "./LiteralChecker/EmotionLiteralChecker";
-import { ItemLiteralChecker } from "./LiteralChecker/ItemLiteralChecker";
-import { RecipeLiteralChecker } from "./LiteralChecker/RecipeLiteralChecker";
-import { ShapeLiteralChecker } from "./LiteralChecker/ShapeLiteralChecker";
 
 export function tokenize(sourceCode) {
     const tokenTypes = [
        
         
-        { type: 'KEYWORD', regex: /\b(fixed|check|opt|option|when|orwhen|otherwise|repeat|while|until|in|skip|stop|try|oops|lastly|task|send)\b/ }, 
-        { type: 'RESERVED_WORD', regex: /\b(shared|secret|SIMPLIFY|WRAP|use)\b/ }, 
-        { type: 'DATATYPE', regex: /\b(num|number|dec|decimal|symb|symbol|ans|answer|color|emo|emotion|shape|Word|Wording|item|Recipe)\b/ }, 
-        { type: 'OOP_KW', regex: /\b(BLUEPRINT|BUILD|OUR|MY)\b/ }, 
+        { type: 'KEYWORD', regex: /\b(defUser|defRoute|defRole|defUserGroup|defRouteGroup|assign|grant|block|auth|redirect|revoke|push|pop|function|if|else|elseif|switch|case|for|while)\b/ }, 
+        { type: 'RESERVED_WORD', regex: /\b(in)\b/ }, 
+
         { type: 'IDENTIFIER', regex: /[a-zA-Z][a-zA-Z0-9_]*/ }, 
         { type: 'COMMENT', regex: /\/\/[^\n]*|\/\*[\s\S]*?\*\// }, 
 
@@ -42,36 +36,30 @@ export function tokenize(sourceCode) {
         { type: 'QUESTION', regex: /\?/},
         { type: 'COMMA', regex: /,/},
 
-        { type: 'DEC_LITERAL', regex: /\b\d+\.\d+\b/ }, 
-        { type: 'NUM_LITERAL', regex: /\b\d+\b/ }, 
+        { type: 'FLOAT_LITERAL', regex: /\b\d+\.\d+\b/ }, 
+        { type: 'INT_LITERAL', regex: /\b\d+\b/ }, 
 
-        { type: 'SYMBOL_LITERAL', regex: /(['"])[^'"]\1/ },
-        { type: 'WORDING_LITERAL', regex: /"[^"]*"/ },
+        { type: 'CHAR_LITERAL', regex: /(['"])[^'"]\1/ },
+        { type: 'EMAILSTR_LITERAL', regex: /"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})"/ },
+        { type: 'ROUTESTR_LITERAL', regex: /^"\/([a-zA-Z0-9-]+(\/\.{3})?)"$/},
 
+       
         { type: 'DOT_OP', regex: /\./},
+        { type: 'STRING_LITERAL', regex: /"[^"]*"/},
         { type: 'WHITESPACE', regex: /\s+/ }, // Match whitespace
-        
 
     ];
 
     const tokens = [];
     let currentPosition = 0;
+    let currentLine = 1;
 
-    let hasShapeDataType = false;
-    let hasColorDatatype = false;
-    let hasEmotionDatatype = false;
-    let hasItemDatatype = false;
-    let hasRecipeDatatype = false;
-
-    let hasAssignmentOp = false;
-
-
-
+    
     while (currentPosition < sourceCode.length) {
         let matchFound = false;
         const remainingSource = sourceCode.slice(currentPosition);
 
-        console.log(`Remaining source: "${remainingSource}" , LENGTH: ${sourceCode.length - currentPosition}`);
+        //console.log(`Remaining source: "${remainingSource}" , LENGTH: ${sourceCode.length - currentPosition}`);
 
         for (let { type, regex } of tokenTypes) {
             const match = regex.exec(remainingSource);
@@ -81,31 +69,20 @@ export function tokenize(sourceCode) {
 
                 if (type !== 'WHITESPACE') {
                     
-                    let token = { type, value };
+                    let token = { type, value, line: currentLine};
                     token = Categorize([token])[0];
                     tokens.push(token);
-
-
-                    if (type === 'DATATYPE') {
-                        
-                        if (value === 'shape') hasShapeDataType = true;
-                        if (value === 'color') hasColorDatatype = true;
-                        if (value === 'emo' || value === 'emotion') hasEmotionDatatype = true;
-                        if (value === 'item') hasItemDatatype = true;
-                        if (value === 'Recipe') hasRecipeDatatype = true;
-
-                    }
-
-                    if (type === 'ASSIGNMENT') hasAssignmentOp = true;
-
-                    // Invoke LiteralChecker and pass all relevant data
-                    LiteralChecker(value, token, tokens, hasAssignmentOp, hasShapeDataType, hasColorDatatype, hasEmotionDatatype, hasItemDatatype, hasRecipeDatatype);
 
                 }
 
                 
                 currentPosition += value.length;
                 matchFound = true;
+
+                if (value.includes('\n')) {
+                    const newLines = value.split('\n').length - 1;
+                    currentLine += newLines;
+                }
                 
                 break; 
             }
@@ -125,54 +102,3 @@ export function tokenize(sourceCode) {
 
 
 
-
-
-function LiteralChecker(value, token, tokens, hasAssignmentOp, hasShapeDataType, hasColorDatatype, hasEmotionDatatype, hasItemDatatype, hasRecipeDatatype){
-    
-    
-    if (hasAssignmentOp && hasShapeDataType) {
-        if (ShapeLiteralChecker(value)) {
-            // If valid Shape Literal, create the New Token
-            token = { type: 'SHAPE_LITERAL', value }; 
-            tokens.pop();  // Remove Identifier Duplicate
-            tokens.push(token);
-        } 
-    }
-
-    if (hasAssignmentOp && hasColorDatatype) {
-        if (ColorLiteralChecker(value)) {
-            // If valid Color Literal, create the New Token
-            token = { type: 'COLOR_LITERAL', value }; 
-            tokens.pop();  // Removes Identifier Duplicate
-            tokens.push(token);
-        } 
-    }
-
-
-    if (hasAssignmentOp && hasEmotionDatatype) {
-        if (EmotionLiteralChecker(value)) {
-            // If valid Emotion Literal, create the New Token
-            token = { type: 'EMOTION_LITERAL', value }; 
-            tokens.pop();  // Removes Identifier Duplicate
-            tokens.push(token);
-        } 
-    }
-
-    if (hasAssignmentOp && hasItemDatatype) {
-        if (ItemLiteralChecker(value)) {
-            // If valid Item Literal, create the New Token
-            token = { type: 'ITEM_LITERAL', value }; 
-            tokens.pop();  // Removes Identifier Duplicate
-            tokens.push(token);
-        } 
-    }
-
-    if (hasAssignmentOp && hasRecipeDatatype) {
-        if (RecipeLiteralChecker(value)) {
-            // If valid Recipe Literal, create the New Token
-            token = { type: 'RECIPE_LITERAL', value }; 
-            tokens.pop();  // Removes Identifier Duplicate
-            tokens.push(token);
-        } 
-    }
-}

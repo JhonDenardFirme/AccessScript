@@ -1,6 +1,36 @@
 export function Categorize(tokens) {
     return tokens.map(token => {
         switch (token.type) {
+
+            case 'KEYWORD':
+                switch (token.value) {
+                    case 'defUser':
+                    case 'defRoute':
+                    case 'defRole':
+                    case 'defUserGroup':
+                    case 'defRouteGroup':
+                    case 'assign':
+                    case 'grant':
+                    case 'block':
+                    case 'auth':
+                    case 'redirect':
+                    case 'revoke':
+                    case 'push':
+                    case 'pop':
+                    case 'function':
+                    case 'if':
+                    case 'else':
+                    case 'elseif':
+                    case 'switch':
+                    case 'case':
+                    case 'for':
+                    case 'while':
+                        return { ...token, category: token.value.toUpperCase() };
+                    default:
+                        return { ...token, category: 'Unknown_Keyword' };
+                }
+            
+
             case 'ARITHMETIC_OP':
                 switch (token.value) {
                     case '+':
